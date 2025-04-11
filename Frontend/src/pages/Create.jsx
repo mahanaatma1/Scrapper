@@ -38,6 +38,10 @@ function Create() {
   const [scrapingStatus, setScrapingStatus] = useState(null)
   const scrapingTimeoutRef = useRef(null)
   const downloadIntervalRef = useRef(null)
+  const [scrapingStartTime, setScrapingStartTime] = useState(null)
+  const [elapsedTime, setElapsedTime] = useState(0)
+  const timerIntervalRef = useRef(null)
+  const [currentCity, setCurrentCity] = useState(null)
 
   // Default keywords array
   const defaultKeywords = [
@@ -50,36 +54,7 @@ function Create() {
     "ui/ux", "web design", "graphic design", "data science", "machine learning",
     "ai", "automation", "qa testing", "software testing", "system admin",
     "network", "cyber security", "flutter", "swift", "ios development",
-    "android development", "game development", "unity", "unreal engine",
-    "c++", "c#", "java", "ruby", "ruby on rails", "go", "golang",
-    "kotlin", "rust", "scala", "svelte", "figma", "adobe xd",
-    "photoshop", "illustrator", "indesign", "after effects", "premiere pro",
-    "3d modeling", "blender", "maya", "zbrush", "content creation",
-    "video editing", "animation", "docker", "kubernetes", "terraform",
-    "jenkins", "gitlab ci", "github actions", "ci/cd", "microservices",
-    "serverless", "lambda", "firebase", "azure", "gcp", "google cloud",
-    "twilio", "stripe", "payment integration", "api development", "rest api",
-    "graphql", "web scraping", "data mining", "data analysis", "excel",
-    "power bi", "tableau", "r programming", "statistics", "big data",
-    "hadoop", "spark", "kafka", "data engineering", "etl",
-    "natural language processing", "nlp", "computer vision", "opencv",
-    "tensorflow", "pytorch", "deep learning", "reinforcement learning",
-    "chatbot", "web3", "defi", "smart contract", "cryptocurrency",
-    "backend", "frontend", "ui developer", "ux researcher", "user research",
-    "prototyping", "wireframing", "responsive design", "mobile first",
-    "cross platform", "pwa", "progressive web app", "web components",
-    "cms", "drupal", "joomla", "magento", "opencart", "prestashop",
-    "squarespace", "database design", "data modeling", "redis", "elasticsearch",
-    "cassandra", "dynamodb", "mariadb", "mysql", "sqlite", "oracle",
-    "security audit", "penetration testing", "ethical hacking",
-    "vulnerability assessment", "ciso", "it support", "helpdesk",
-    "technical support", "system engineer", "network engineer", "cisco",
-    "juniper", "virtualization", "vmware", "hyper-v", "windows server",
-    "linux admin", "bash scripting", "powershell", "automation script",
-    "cron job", "email marketing", "content marketing", "social media management",
-    "ppc", "google ads", "facebook ads", "marketing automation", "analytics",
-    "google analytics", "conversion optimization", "a/b testing", "user testing",
-    "accessibility", "wcag", "seo optimization", "technical seo", "local seo"
+    "android development", "game development"
   ]
   
   // Initialize selectedKeywords with default keywords
@@ -87,21 +62,14 @@ function Create() {
 
   // Keyword categories for organization
   const keywordCategories = {
-    "Web Development": ["website development", "wordpress", "php", "laravel", "mern", "mean", "next.js", "react", "node.js", "full stack", "javascript", "typescript", "vue.js", "angular", "frontend", "backend", "responsive design", "web components", "pwa", "progressive web app"],
-    "Mobile Development": ["mobile app", "flutter", "swift", "ios development", "android development", "react native", "cross platform", "mobile first"],
-    "Design": ["ui/ux", "web design", "graphic design", "figma", "adobe xd", "photoshop", "illustrator", "indesign", "wireframing", "prototyping", "user research", "ux researcher", "ui developer"],
-    "Data & AI": ["data science", "machine learning", "ai", "data mining", "data analysis", "big data", "hadoop", "spark", "data engineering", "etl", "natural language processing", "nlp", "computer vision", "opencv", "tensorflow", "pytorch", "deep learning", "reinforcement learning"],
-    "Blockchain": ["blockchain", "ethereum", "solidity", "nft", "web3", "defi", "smart contract", "cryptocurrency"],
-    "DevOps & Cloud": ["devops", "aws", "cloud", "docker", "kubernetes", "terraform", "jenkins", "gitlab ci", "github actions", "ci/cd", "microservices", "serverless", "lambda", "firebase", "azure", "gcp", "google cloud"],
-    "Databases": ["database", "sql", "nosql", "mongodb", "postgresql", "database design", "data modeling", "redis", "elasticsearch", "cassandra", "dynamodb", "mariadb", "mysql", "sqlite", "oracle"],
-    "Marketing": ["digital marketing", "seo", "social media", "email marketing", "content marketing", "social media management", "ppc", "google ads", "facebook ads", "marketing automation", "analytics", "google analytics", "conversion optimization", "a/b testing", "seo optimization", "technical seo", "local seo"],
-    "3D & Animation": ["3d artist", "3d modeling", "blender", "maya", "zbrush", "game development", "unity", "unreal engine", "animation", "video editing", "after effects", "premiere pro"],
-    "Programming Languages": ["python", "django", "c++", "c#", "java", "ruby", "ruby on rails", "go", "golang", "kotlin", "rust", "scala", "svelte"],
-    "System & Security": ["system admin", "network", "cyber security", "security audit", "penetration testing", "ethical hacking", "vulnerability assessment", "ciso", "it support", "helpdesk", "technical support", "system engineer", "network engineer", "cisco", "juniper", "virtualization", "vmware", "hyper-v", "windows server"],
-    "Scripting & Automation": ["bash scripting", "powershell", "automation script", "cron job", "automation"],
-    "API & Integration": ["api development", "rest api", "graphql", "web scraping", "twilio", "stripe", "payment integration"],
-    "E-commerce": ["e-commerce", "shopify", "wix", "magento", "opencart", "prestashop", "squarespace"],
-    "Other": ["cms", "drupal", "joomla", "content creation", "user testing", "accessibility", "wcag", "qa testing", "software testing"]
+    "Web Development": ["website development", "wordpress", "php", "laravel", "mern", "mean", "next.js", "react", "node.js", "full stack", "javascript", "typescript", "vue.js", "angular"],
+    "Mobile Development": ["mobile app", "flutter", "swift", "ios development", "android development"],
+    "Design": ["ui/ux", "web design", "graphic design"],
+    "Data & AI": ["data science", "machine learning", "ai", "database", "sql", "nosql", "mongodb", "postgresql"],
+    "Blockchain": ["blockchain", "ethereum", "solidity", "nft"],
+    "DevOps & Cloud": ["devops", "aws", "cloud"],
+    "Digital Marketing": ["digital marketing", "seo", "social media", "e-commerce", "shopify", "wix"],
+    "Other": ["3d artist", "automation", "qa testing", "software testing", "system admin", "network", "cyber security", "python", "django", "game development"]
   }
   
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -251,8 +219,11 @@ function Create() {
         cities: selectedCities,
         keywords: selectedKeywords,
         use_headless: false,
-        batch_size: 10,
-        max_retries: 3
+        batch_size: Math.min(5, Math.max(1, Math.ceil(selectedCities.length / 5))), // Dynamic batch size: 1-5 cities per batch
+        max_retries: 3,
+        timeout_per_city: 0, // 0 means no timeout - let each city take as long as needed
+        save_partial_results: true, // Save results even if process is interrupted
+        infinite_mode: true // New flag to indicate there should be no timeout
       };
 
       await scraperService.updateConfig(configData);
@@ -271,18 +242,29 @@ function Create() {
   const startScraping = async () => {
     try {
       const numberOfCities = selectedCities.length;
-      const estimatedTimeoutMs = Math.max(numberOfCities * 30000, 180000);
+      // Maximum possible timeout - essentially infinite (24 hours)
+      const estimatedTimeoutMs = 86400000; // 24 hours in milliseconds
       
-      setLoadingMessage(`Starting scraping process for ${numberOfCities} cities (may take several minutes)...`);
+      setLoadingMessage(`Starting scraping process for ${numberOfCities} cities (may take a long time)...`);
       
       try {
         // Log that we're making the request
-        console.log(`Making start-scraping request with timeout: ${estimatedTimeoutMs}ms`);
+        console.log(`Making start-scraping request with unlimited timeout`);
+        
+        // First check if there's an existing scraping job
+        const status = await checkScrapingStatus();
+        if (status && status.is_running) {
+          console.log('A scraping job is already running:', status);
+          setLoadingMessage(`Resuming existing scraping job (${status.progress || 0}% complete)...`);
+          return { success: true, data: status, resumed: true };
+        }
         
         // Make a single attempt to start scraping
         const response = await scraperService.startScraping({
           numberOfCities: numberOfCities,
-          timeout: estimatedTimeoutMs
+          timeout: estimatedTimeoutMs,
+          resume: true, // Add flag to tell backend to resume from where it left off if possible
+          infinite_mode: true // Tell backend not to time out
         });
         
         // If we reach here, the scraping process was successfully started
@@ -404,31 +386,81 @@ function Create() {
     }
   };
 
+  // Timer function to track elapsed time
+  const startScrapingTimer = () => {
+    setScrapingStartTime(Date.now())
+    setElapsedTime(0)
+    
+    if (timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current)
+    }
+    
+    timerIntervalRef.current = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - scrapingStartTime) / 1000)
+      setElapsedTime(elapsed)
+    }, 1000)
+  }
+  
+  const stopScrapingTimer = () => {
+    if (timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current)
+      timerIntervalRef.current = null
+    }
+  }
+  
+  // Format elapsed time in HH:MM:SS format
+  const formatElapsedTime = (seconds) => {
+    if (!seconds) return '00:00:00'
+    const hrs = Math.floor(seconds / 3600)
+    const mins = Math.floor((seconds % 3600) / 60)
+    const secs = seconds % 60
+    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+  }
+
+  // Pass current city info to loading overlay
+  const getLoadingOverlayMessage = () => {
+    if (currentCity) {
+      return (
+        <div>
+          {loadingMessage}
+          <div className="mt-2 text-teal-300 font-medium">
+            Currently processing: <span className="text-white">{currentCity}</span>
+          </div>
+        </div>
+      )
+    }
+    return loadingMessage
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     setIsLoading(true);
     setLoadingMessage('Initializing process...');
+    // Start the timer
+    startScrapingTimer();
+    
+    // Recovery variables
+    let retryCount = 0;
+    const maxRetries = 3;
+    let recoveryMode = false;
+    
+    // Status check settings
+    const initialStatusCheckDelay = 10000; // 10 seconds initially
 
     try {
-      // Calculate maximum attempts based on number of cities
-      // Formula: baseAttemptsPerCity * numberOfCities, but at least minAttempts and at most maxAttempts
+      // Calculate monitoring attempts - but don't use this as a hard timeout
+      // We'll just use this to determine how often to check for status changes
       const numberOfCities = selectedCities.length;
-      const baseAttemptsPerCity = 20; // 20 attempts per city (about 3.3 minutes per city at 10-second intervals)
-      const minAttemptsLimit = 60; // At least 10 minutes (60 attempts * 10 seconds)
-      const maxAttemptsLimit = 360; // At most 1 hour (360 attempts * 10 seconds)
       
-      const calculatedMaxAttempts = Math.min(
-        Math.max(numberOfCities * baseAttemptsPerCity, minAttemptsLimit),
-        maxAttemptsLimit
-      );
+      // We still calculate this for status update frequency, but we won't enforce it as a timeout
+      const baseAttemptsPerCity = 40;
+      const minAttemptsLimit = 120;
+      const calculatedMaxAttempts = Math.max(numberOfCities * baseAttemptsPerCity, minAttemptsLimit);
       
-      console.log(`Calculated ${calculatedMaxAttempts} max attempts for ${numberOfCities} cities`);
+      console.log(`Status will be checked approximately every ${initialStatusCheckDelay/1000} seconds`);
+      console.log(`Will check more frequently after ${calculatedMaxAttempts} checks`);
       
-      // Display estimated maximum wait time
-      const estimatedMaxMinutes = Math.ceil((calculatedMaxAttempts * 10) / 60);
-      console.log(`Maximum wait time: approximately ${estimatedMaxMinutes} minutes`);
-
       // STEP 0: Clean frontend output directory first
       try {
         setLoadingMessage('Cleaning frontend output files...');
@@ -469,41 +501,86 @@ function Create() {
       }
 
       // Step 3: Start scraping
-      let scrapingResult = { success: false };
-      try {
-        setLoadingMessage(`Starting scraping process for ${numberOfCities} cities (est. max: ${estimatedMaxMinutes} min)...`);
-        scrapingResult = await startScraping();
+      const startScrapingWithRetries = async () => {
+        let scrapingResult = { success: false };
         
-        if (!scrapingResult.success && !scrapingResult.timedOut) {
-          setIsLoading(false);
-          return;
+        try {
+          setLoadingMessage(`${recoveryMode ? 'Restarting' : 'Starting'} scraping process for ${numberOfCities} cities (est. max: ${formatElapsedTime(elapsedTime)})...`);
+          scrapingResult = await startScraping();
+          
+          if (!scrapingResult.success && !scrapingResult.timedOut) {
+            // If we've tried before, see if we can recover
+            if (retryCount < maxRetries) {
+              retryCount++;
+              recoveryMode = true;
+              toast.warning(`Scraping failed. Attempting recovery (Try ${retryCount}/${maxRetries})...`);
+              
+              // Wait 10 seconds before retrying
+              await new Promise(resolve => setTimeout(resolve, 10000));
+              return await startScrapingWithRetries();
+            } else {
+              setIsLoading(false);
+              stopScrapingTimer();
+              toast.error('Failed to start scraping after multiple attempts');
+              return { success: false };
+            }
+          }
+          
+          // If we had a timeout, update the message but continue
+          if (scrapingResult.timedOut) {
+            toast.warning(`Scraping request is taking longer than expected. We'll monitor progress...`);
+            setLoadingMessage(`Waiting for scraping status...`);
+          } else {
+            // Successful start
+            setLoadingMessage(`Scraping started successfully. Monitoring progress...`);
+          }
+          
+          return scrapingResult;
+        } catch (error) {
+          // Even if start scraping completely fails, we'll still try to check status
+          console.error('Complete failure in start scraping, but will try status check:', error);
+          
+          // If we've tried before, see if we can recover
+          if (retryCount < maxRetries) {
+            retryCount++;
+            recoveryMode = true;
+            toast.warning(`Scraping failed. Attempting recovery (Try ${retryCount}/${maxRetries})...`);
+            
+            // Wait 10 seconds before retrying
+            await new Promise(resolve => setTimeout(resolve, 10000));
+            return await startScrapingWithRetries();
+          }
+          
+          return { timedOut: true, error };
         }
-        
-        // If we had a timeout, update the message but continue
-        if (scrapingResult.timedOut) {
-          toast.warning(`Scraping request is taking longer than expected. We'll monitor progress...`);
-          setLoadingMessage(`Waiting for scraping status...`);
-        } else {
-          // Successful start
-          setLoadingMessage(`Scraping started successfully. Monitoring progress...`);
-        }
-      } catch (error) {
-        // Even if start scraping completely fails, we'll still try to check status
-        console.error('Complete failure in start scraping, but will try status check:', error);
-        scrapingResult = { timedOut: true };
-        setLoadingMessage(`Verifying if scraping started...`);
+      };
+      
+      const scrapingResult = await startScrapingWithRetries();
+      
+      if (!scrapingResult.success && !scrapingResult.timedOut && !recoveryMode) {
+        setIsLoading(false);
+        stopScrapingTimer();
+        return;
       }
 
-      // Step 4: Monitor scraping status
+      // Custom function to update loading message with elapsed time
+      const updateLoadingMessageWithTime = (msg) => {
+        setLoadingMessage(`${msg} (Running: ${formatElapsedTime(elapsedTime)})`);
+      }
+      
+      // Step 4: Monitor scraping status - no fixed timeout
       let attempts = 0;
       let hasDownloaded = false;
       let lastStatus = null;
-      const maxAttempts = calculatedMaxAttempts;
-      let consecutiveErrorCount = 0; // Track consecutive errors
-      let statusCheckDelay = 10000; // Start with 10 seconds
+      let consecutiveErrorCount = 0;
+      let statusCheckDelay = initialStatusCheckDelay; // Start with 10 seconds
       const maxStatusCheckDelay = 30000; // Maximum 30 seconds between checks
       
-      // Function to perform status check that will be used in the interval
+      // After this many checks, we'll reduce the check frequency to avoid overloading the server
+      const frequencyReductionThreshold = calculatedMaxAttempts;
+      let hasReducedFrequency = false;
+      
+      // Function to perform status check
       const performStatusCheck = async () => {
         attempts++;
         
@@ -514,10 +591,28 @@ function Create() {
             // Reset error counter and back-off delay on successful status check
             if (consecutiveErrorCount > 0) {
               consecutiveErrorCount = 0;
-              statusCheckDelay = 10000; // Reset to default on success after errors
+              // Only reset delay if we haven't passed the frequency reduction threshold
+              if (!hasReducedFrequency) {
+                statusCheckDelay = 10000;
+              }
             }
             
-            console.log(`Current scraping status (attempt ${attempts}/${maxAttempts}):`, status);
+            // After many attempts, reduce the frequency of status checks to avoid server load
+            if (attempts >= frequencyReductionThreshold && !hasReducedFrequency) {
+              console.log(`Reducing status check frequency after ${attempts} checks`);
+              clearInterval(downloadIntervalRef.current);
+              statusCheckDelay = 30000; // Check every 30 seconds after the threshold
+              downloadIntervalRef.current = setInterval(performStatusCheck, statusCheckDelay);
+              hasReducedFrequency = true;
+              
+              // Notify the user that we're still working but checking less frequently
+              toast.info("Scraping is taking longer than usual. Status will now update less frequently.");
+            }
+            
+            // Log status every 10 attempts to avoid console spam
+            if (attempts % 10 === 0) {
+              console.log(`Current scraping status (check #${attempts}):`, status);
+            }
             
             // Only update if status has changed
             if (JSON.stringify(status) !== JSON.stringify(lastStatus)) {
@@ -525,22 +620,26 @@ function Create() {
               
               // Handle different status cases
               if (status.is_running) {
-                // Calculate remaining time estimate based on progress
-                const progressPercent = status.progress || 0;
-                const estimatedTotalAttempts = progressPercent > 0 ? 
-                  Math.min(Math.ceil(attempts / (progressPercent / 100)), maxAttempts) : 
-                  maxAttempts;
-                const remainingAttempts = estimatedTotalAttempts - attempts;
-                const remainingMinutes = Math.ceil((remainingAttempts * statusCheckDelay / 1000) / 60);
-                
                 // Format the message based on the current phase
+                const progressPercent = status.progress || 0;
                 const phaseMessage = status.current_phase || 'Scraping in progress';
                 const progressMessage = `Progress: ${progressPercent}%`;
-                const timeMessage = progressPercent > 0 ? `, Est. remaining: ~${remainingMinutes} min` : '';
                 
-                setLoadingMessage(`${phaseMessage} (${progressMessage}${timeMessage})`);
+                // Update current city if available
+                if (status.current_city) {
+                  setCurrentCity(status.current_city);
+                }
+                
+                updateLoadingMessageWithTime(`${phaseMessage} (${progressMessage})`);
+                
+                // If progress is 0% for a long time, provide reassurance
+                if (progressPercent === 0 && attempts > 30) {
+                  toast.info("Scraping is taking longer than usual to start. This is normal for many cities.");
+                }
               } else if (status.completed) {
-                clearInterval(statusInterval);
+                clearInterval(downloadIntervalRef.current);
+                stopScrapingTimer();
+                setCurrentCity(null);
                 setLoadingMessage('Scraping completed! Getting results...');
                 
                 const downloaded = await downloadResults();
@@ -551,31 +650,30 @@ function Create() {
                   navigate('/generate');
                 }
               } else if (status.no_results || (status.current_phase === null && status.last_completed === null)) {
-                clearInterval(statusInterval);
+                clearInterval(downloadIntervalRef.current);
+                stopScrapingTimer();
                 setIsLoading(false);
                 toast.warning('No results found for the specified criteria');
               } else if (status.error) {
-                clearInterval(statusInterval);
+                clearInterval(downloadIntervalRef.current);
+                stopScrapingTimer();
                 setIsLoading(false);
                 toast.error(`Scraping error: ${status.last_completed || 'Unknown error'}`);
               }
             } else {
               // Status hasn't changed, but update the message periodically
               if (attempts % 5 === 0 && status.is_running) {
-                // Update the time estimate without changing the whole message
+                // Update the progress without changing the whole message
                 const progressPercent = status.progress || 0;
-                const estimatedTotalAttempts = progressPercent > 0 ? 
-                  Math.min(Math.ceil(attempts / (progressPercent / 100)), maxAttempts) : 
-                  maxAttempts;
-                const remainingAttempts = estimatedTotalAttempts - attempts;
-                const remainingMinutes = Math.ceil((remainingAttempts * statusCheckDelay / 1000) / 60);
-                
-                // Keep the same phase but update the progress and time
                 const phaseMessage = status.current_phase || 'Scraping in progress';
                 const progressMessage = `Progress: ${progressPercent}%`;
-                const timeMessage = progressPercent > 0 ? `, Est. remaining: ~${remainingMinutes} min` : '';
                 
-                setLoadingMessage(`${phaseMessage} (${progressMessage}${timeMessage})`);
+                // Update current city if available
+                if (status.current_city && status.current_city !== currentCity) {
+                  setCurrentCity(status.current_city);
+                }
+                
+                updateLoadingMessageWithTime(`${phaseMessage} (${progressMessage})`);
               }
             }
           } else {
@@ -593,7 +691,7 @@ function Create() {
                 console.log(`Increasing status check delay to ${statusCheckDelay}ms`);
                 
                 // Reset interval with new delay
-                clearInterval(statusInterval);
+                clearInterval(downloadIntervalRef.current);
                 downloadIntervalRef.current = setInterval(performStatusCheck, statusCheckDelay);
               }
               
@@ -614,7 +712,7 @@ function Create() {
               console.log(`Increasing status check delay to ${statusCheckDelay}ms`);
               
               // Reset interval with new delay
-              clearInterval(statusInterval);
+              clearInterval(downloadIntervalRef.current);
               downloadIntervalRef.current = setInterval(performStatusCheck, statusCheckDelay);
             }
             
@@ -622,12 +720,8 @@ function Create() {
           }
         }
         
-        // Check for timeout regardless of status checks
-        if (attempts >= maxAttempts) {
-          clearInterval(statusInterval);
-          setIsLoading(false);
-          toast.error(`Scraping process timed out after ${Math.round(maxAttempts * statusCheckDelay / 1000 / 60)} minutes`);
-        }
+        // We no longer check for timeout
+        // The process will continue indefinitely until completion or error
       };
       
       console.log('Beginning status monitoring...');
@@ -685,8 +779,8 @@ function Create() {
       }
       
       // Begin regular status polling
-      const statusInterval = setInterval(performStatusCheck, statusCheckDelay);
-      downloadIntervalRef.current = statusInterval;
+      const downloadInterval = setInterval(performStatusCheck, statusCheckDelay);
+      downloadIntervalRef.current = downloadInterval;
 
     } catch (error) {
       console.error('Error in scraping process:', error);
@@ -703,6 +797,9 @@ function Create() {
       }
       if (scrapingTimeoutRef.current) {
         clearTimeout(scrapingTimeoutRef.current);
+      }
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
       }
     };
   }, []);
@@ -747,7 +844,7 @@ function Create() {
 
   return (
     <div className="min-h-[calc(100vh-76px)] bg-gradient-to-br from-gray-900 to-purple-900 p-4 sm:p-6 lg:p-8">
-      {isLoading && <LoadingOverlay message={loadingMessage} />}
+      {isLoading && <LoadingOverlay message={getLoadingOverlayMessage()} />}
       <h1 className="text-purple-200 text-2xl sm:text-3xl font-bold mb-6 md:mb-8 text-center">Create New Scraping Request</h1>
       
       <div className="flex items-center justify-center">
