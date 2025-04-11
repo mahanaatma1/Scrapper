@@ -1,0 +1,263 @@
+{
+  "USA": [
+    {
+      "state": "Alabama",
+      "cities": ["auburn", "bham", "dothan", "shoals", "gadsden", "huntsville", "mobile", "montgomery", "tuscaloosa"]
+    },
+    {
+      "state": "Alaska",
+      "cities": ["anchorage", "fairbanks", "kenai", "juneau"]
+    },
+    {
+      "state": "Arizona",
+      "cities": ["flagstaff", "mohave", "phoenix", "prescott", "showlow", "sierravista", "tucson", "yuma"]
+    },
+    {
+      "state": "Arkansas",
+      "cities": ["fayar", "fortsmith", "jonesboro", "littlerock", "texarkana"]
+    },
+    {
+      "state": "California",
+      "cities": ["bakersfield", "chico", "fresno", "goldcountry", "hanford", "humboldt", "imperial", "inlandempire", "losangeles", "mendocino", "merced", "modesto", "monterey", "orangecounty", "palmsprings", "redding", "sacramento", "sandiego", "sfbay", "slo", "santabarbara", "santamaria", "siskiyou", "stockton", "susanville", "ventura", "visalia", "yubasutter"]
+    },
+    {
+      "state": "Colorado",
+      "cities": ["boulder", "cosprings", "denver", "eastco", "fortcollins", "rockies", "pueblo", "westslope"]
+    },
+    {
+      "state": "Connecticut",
+      "cities": ["newlondon", "hartford", "newhaven", "nwct"]
+    },
+    {
+      "state": "Delaware",
+      "cities": ["delaware"]
+    },
+    {
+      "state": "District of Columbia",
+      "cities": ["washingtondc"]
+    },
+    {
+      "state": "Florida",
+      "cities": ["miami", "daytona", "keys", "fortmyers", "gainesville", "cfl", "jacksonville", "lakeland", "lakecity", "ocala", "okaloosa", "orlando", "panamacity", "pensacola", "sarasota", "spacecoast", "staugustine", "tallahassee", "tampa", "treasure"]
+    },
+    {
+      "state": "Georgia",
+      "cities": ["albanyga", "athensga", "atlanta", "augusta", "brunswick", "columbusga", "macon", "nwga", "savannah", "statesboro", "valdosta"]
+    },
+    {
+      "state": "Hawaii",
+      "cities": ["honolulu"]
+    },
+    {
+      "state": "Idaho",
+      "cities": ["boise", "eastidaho", "lewiston", "twinfalls"]
+    },
+    {
+      "state": "Illinois",
+      "cities": ["bn", "chambana", "chicago", "decatur", "lasalle", "mattoon", "peoria", "rockford", "carbondale", "springfieldil", "quincy"]
+    },
+    {
+      "state": "Indiana",
+      "cities": ["bloomington", "evansville", "fortwayne", "indianapolis", "kokomo", "tippecanoe", "muncie", "richmondin", "southbend", "terrehaute"]
+    },
+    {
+      "state": "Iowa",
+      "cities": ["ames", "cedarrapids", "desmoines", "dubuque", "fortdodge", "iowacity", "masoncity", "quadcities", "siouxcity", "ottumwa", "waterloo"]
+    },
+    {
+      "state": "Kansas",
+      "cities": ["lawrence", "ksu", "nwks", "salina", "seks", "swks", "topeka", "wichita"]
+    },
+    {
+      "state": "Kentucky",
+      "cities": ["bgky", "eastky", "lexington", "louisville", "owensboro", "westky"]
+    },
+    {
+      "state": "Louisiana",
+      "cities": ["batonrouge", "cenla", "houma", "lafayette", "lakecharles", "monroe", "neworleans", "shreveport"]
+    },
+    {
+      "state": "Maine",
+      "cities": ["maine"]
+    },
+    {
+      "state": "Maryland",
+      "cities": ["annapolis", "baltimore", "easternshore", "frederick", "smd", "westmd"]
+    },
+    {
+      "state": "Massachusetts",
+      "cities": ["boston", "capecod", "southcoast", "westernmass", "worcester"]
+    },
+    {
+      "state": "Michigan",
+      "cities": ["annarbor", "battlecreek", "centralmich", "detroit", "flint", "grandrapids", "holland", "jxn", "kalamazoo", "lansing", "monroemi", "muskegon", "nmi", "porthuron", "saginaw", "swmi", "thumb", "up"]
+    },
+    {
+      "state": "Minnesota",
+      "cities": ["bemidji", "brainerd", "duluth", "mankato", "minneapolis", "rmn", "marshall", "stcloud"]
+    },
+    {
+      "state": "Mississippi",
+      "cities": ["gulfport", "hattiesburg", "jackson", "meridian", "northmiss", "natchez"]
+    },
+    {
+      "state": "Missouri",
+      "cities": ["columbiamo", "joplin", "kansascity", "kirksville", "loz", "semo", "springfield", "stjoseph", "stlouis"]
+    },
+    {
+      "state": "Montana",
+      "cities": ["billings", "bozeman", "butte", "greatfalls", "helena", "kalispell", "missoula", "montana"]
+    },
+    {
+      "state": "Nebraska",
+      "cities": ["grandisland", "lincoln", "northplatte", "omaha", "scottsbluff"]
+    },
+    {
+      "state": "Nevada",
+      "cities": ["elko", "lasvegas", "reno"]
+    },
+    {
+      "state": "New Hampshire",
+      "cities": ["nh"]
+    },
+    {
+      "state": "New Jersey",
+      "cities": ["cnj", "jerseyshore", "newjersey", "southjersey"]
+    },
+    {
+      "state": "New Mexico",
+      "cities": ["albuquerque", "clovis", "farmington", "lascruces", "roswell", "santafe"]
+    },
+    {
+      "state": "New York",
+      "cities": ["albany", "binghamton", "buffalo", "catskills", "chautauqua", "elmira", "fingerlakes", "glensfalls", "hudsonvalley", "ithaca", "longisland", "newyork", "oneonta", "plattsburgh", "potsdam", "rochester", "syracuse", "twintiers", "utica", "watertown"]
+    },
+    {
+      "state": "North Carolina",
+      "cities": ["asheville", "boone", "charlotte", "eastnc", "fayetteville", "greensboro", "hickory", "onslow", "outerbanks", "raleigh", "wilmington", "winstonsalem"]
+    },
+    {
+      "state": "North Dakota",
+      "cities": ["bismarck", "fargo", "grandforks", "nd"]
+    },
+    {
+      "state": "Ohio",
+      "cities": ["akroncanton", "ashtabula", "athensohio", "chillicothe", "cincinnati", "cleveland", "columbus", "dayton", "limaohio", "mansfield", "sandusky", "toledo", "tuscarawas", "youngstown", "zanesville"]
+    },
+    {
+      "state": "Oklahoma",
+      "cities": ["lawton", "enid", "oklahomacity", "stillwater", "tulsa"]
+    },
+    {
+      "state": "Oregon",
+      "cities": ["bend", "corvallis", "eastoregon", "eugene", "klamath", "medford", "oregoncoast", "portland", "roseburg", "salem"]
+    },
+    {
+      "state": "Pennsylvania",
+      "cities": ["altoona", "chambersburg", "erie", "harrisburg", "lancaster", "allentown", "meadville", "philadelphia", "pittsburgh", "poconos", "reading", "scranton", "pennstate", "williamsport", "york"]
+    },
+    {
+      "state": "Rhode Island",
+      "cities": ["providence"]
+    },
+    {
+      "state": "South Carolina",
+      "cities": ["charleston", "columbia", "florencesc", "greenville", "hiltonhead", "myrtlebeach"]
+    },
+    {
+      "state": "South Dakota",
+      "cities": ["nesd", "csd", "rapidcity", "siouxfalls", "sd"]
+    },
+    {
+      "state": "Tennessee",
+      "cities": ["chattanooga", "clarksville", "cookeville", "jacksontn", "knoxville", "memphis", "nashville", "tricities"]
+    },
+    {
+      "state": "Texas",
+      "cities": ["abilene", "amarillo", "austin", "beaumont", "brownsville", "collegestation", "corpuschristi", "dallas", "nacogdoches", "delrio", "elpaso", "galveston", "houston", "killeen", "laredo", "lubbock", "mcallen", "odessa", "sanangelo", "sanantonio", "sanmarcos", "bigbend", "texoma", "easttexas", "victoriatx", "waco", "wichitafalls"]
+    },
+    {
+      "state": "Utah",
+      "cities": ["logan", "ogden", "provo", "saltlakecity", "stgeorge"]
+    },
+    {
+      "state": "Vermont",
+      "cities": ["vermont"]
+    },
+    {
+      "state": "Virginia",
+      "cities": ["charlottesville", "danville", "fredericksburg", "norfolk", "harrisonburg", "lynchburg", "blacksburg", "richmond", "roanoke", "swva", "winchester"]
+    },
+    {
+      "state": "Washington",
+      "cities": ["bellingham", "kpr", "moseslake", "olympic", "pullman", "seattle", "skagit", "spokane", "wenatchee", "yakima"]
+    },
+    {
+      "state": "West Virginia",
+      "cities": ["charlestonwv", "martinsburg", "huntington", "morgantown", "wheeling", "parkersburg", "swv", "wv"]
+    },
+    {
+      "state": "Wisconsin",
+      "cities": ["appleton", "eauclaire", "greenbay", "janesville", "racine", "lacrosse", "madison", "milwaukee", "northernwi", "sheboygan", "wausau"]
+    },
+    {
+      "state": "Wyoming",
+      "cities": ["wyoming"]
+    },
+    {
+      "state": "Territories",
+      "cities": ["micronesia", "puertorico", "virgin"]
+    }
+  ],
+  "Canada": [
+    {
+      "state": "Alberta",
+      "cities": ["calgary", "edmonton", "ftmcmurray", "lethbridge", "hat", "peace", "reddeer"]
+    },
+    {
+      "state": "British Columbia",
+      "cities": ["cariboo", "comoxvalley", "abbotsford", "kamloops", "kelowna", "kootenays", "nanaimo", "skeena", "sunshine", "vancouver", "victoria", "whistler"]
+    },
+    {
+      "state": "Manitoba",
+      "cities": ["winnipeg"]
+    },
+    {
+      "state": "New Brunswick",
+      "cities": ["newbrunswick"]
+    },
+    {
+      "state": "Newfoundland and Labrador",
+      "cities": ["stjohns"]
+    },
+    {
+      "state": "Northwest Territories",
+      "cities": ["yellowknife"]
+    },
+    {
+      "state": "Nova Scotia",
+      "cities": ["halifax"]
+    },
+    {
+      "state": "Ontario",
+      "cities": ["barrie", "belleville", "brantford", "chatham", "cornwall", "guelph", "hamilton", "kingston", "kitchener", "londonon", "niagara", "ottawa", "owensound", "peterborough", "sarnia", "soo", "sudbury", "thunderbay", "toronto", "windsor"]
+    },
+    {
+      "state": "Prince Edward Island",
+      "cities": ["pei"]
+    },
+    {
+      "state": "Quebec",
+      "cities": ["montreal", "quebec", "saguenay", "sherbrooke", "troisrivieres"]
+    },
+    {
+      "state": "Saskatchewan",
+      "cities": ["regina", "saskatoon"]
+    },
+    {
+      "state": "Yukon",
+      "cities": ["whitehorse"]
+    }
+  ]
+}
+
