@@ -236,7 +236,13 @@ class CraigslistScraper:
         """
         all_listings = []
         
+        # Import scraping_status from app.py for updating current city
+        from app import scraping_status
+        
         for city in self.cities:
+            # Update current city in status
+            scraping_status["current_city"] = city
+            
             url = self.base_url.format(city)
             
             if not self._load_page_with_retry(url):
@@ -314,20 +320,41 @@ class CraigslistScraper:
                         "div.meta > span:first-child",
                         "time",
                         "span[data-testid='listing-date']",
-                        "span.date"
+                        "span.date",
+                        ".meta .pl",
+                        ".result-date"
                     ]
                     
+                    post_date = "Unknown"
                     for selector in date_selectors:
                         try:
                             date_element = element.find_element(By.CSS_SELECTOR, selector)
                             if date_element:
-                                break
+                                # Try to get date from title attribute
+                                date_value = date_element.get_attribute("title")
+                                # If title doesn't have the date, get the text content
+                                if not date_value:
+                                    date_value = date_element.text.strip()
+                                
+                                if date_value:
+                                    post_date = date_value
+                                    break
                         except:
                             continue
                     
-                    post_date = "Unknown"
-                    if date_element:
-                        post_date = date_element.get_attribute("title") or date_element.text.strip()
+                    # Check if date contains any text, not just whitespace
+                    if not post_date or post_date.strip() == "" or post_date == "Unknown":
+                        # Try to find a datetime attribute
+                        try:
+                            datetime_attr = element.find_element(By.CSS_SELECTOR, "[datetime]")
+                            if datetime_attr:
+                                post_date = datetime_attr.get_attribute("datetime") or "Unknown"
+                        except:
+                            pass
+                    
+                    # Ensure date is not empty
+                    if not post_date or post_date.strip() == "":
+                        post_date = "Unknown"
                     
                     # Check if the title contains any of our keywords
                     if self._has_keyword(title):
@@ -426,6 +453,9 @@ class CraigslistScraper:
         
         if max_listings is not None:
             filtered_df = filtered_df.iloc[:max_listings]
+            
+        # Import scraping_status from app.py for updating current city
+        from app import scraping_status
         
         # Add already processed listings to results
         if start_index > 0:
@@ -435,9 +465,24 @@ class CraigslistScraper:
         
         # Process each listing
         for idx, row in filtered_df.iterrows():
+            if max_listings is not None and len(results) >= max_listings:
+                break
+            
+            # Check if this row has been processed already
+            if 'Processed' in row and row['Processed']:
+                continue
+
+            # Update status with current city
+            city = row.get('City', 'Unknown')
+            scraping_status["current_city"] = city
+                
+            link = row.get('Link', '')
+            if not link:
+                continue
+            
             try:
                 # Visit the listing page
-                if not self._load_page_with_retry(row['Link']):
+                if not self._load_page_with_retry(link):
                     if attempt == self.max_retries - 1:
                         listing_data = row.to_dict()
                         listing_data['Description'] = "Error: Failed to load page"
@@ -525,7 +570,7 @@ class CraigslistScraper:
                         # Check for CAPTCHA after clicking reply
                         if self._check_for_blocking():
                             # After CAPTCHA is solved, reload and try again
-                            self._load_page_with_retry(row['Link'])
+                            self._load_page_with_retry(link)
                             
                             # Try to find reply button again
                             for selector in reply_selectors:

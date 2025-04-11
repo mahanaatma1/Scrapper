@@ -46,7 +46,8 @@ scraping_status = {
     "last_completed": None,
     "completed": False,
     "error": False,
-    "no_results": False
+    "no_results": False,
+    "current_city": None
 }
 
 # Current configuration (modified via API)
@@ -93,7 +94,8 @@ def reset_status():
         "last_completed": None,
         "completed": False,
         "error": False,
-        "no_results": False
+        "no_results": False,
+        "current_city": None
     }
 
 # Configure logging
