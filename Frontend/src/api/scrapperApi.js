@@ -133,5 +133,40 @@ export const scraperService = {
     } catch (error) {
       throw error;
     }
+  },
+  
+  // Force reset of scraper to ensure proper cleanup between sessions
+  resetScraper: async () => {
+    try {
+      // First, attempt to cleanup the backend
+      try {
+        await scraperApi.post('/cleanup');
+      } catch (error) {
+        console.warn('Cleanup error during reset:', error);
+        // Continue with reset even if cleanup fails
+      }
+      
+      // Clean frontend files to ensure a fresh start
+      try {
+        await scraperApi.delete('/clean-frontend-files');
+      } catch (error) {
+        console.warn('Frontend files cleanup error during reset:', error);
+        // Continue with reset even if file cleanup fails
+      }
+      
+      // Reset scraping status
+      try {
+        // We don't have a direct endpoint for this, but we can check status 
+        // to ensure we're in sync with backend
+        await scraperApi.get('/scraping-status');
+      } catch (error) {
+        console.warn('Status check error during reset:', error);
+      }
+      
+      return { success: true, message: 'Scraper reset complete' };
+    } catch (error) {
+      console.error('Complete failure during scraper reset:', error);
+      return { success: false, error: error.message };
+    }
   }
 };

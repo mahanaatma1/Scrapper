@@ -1,7 +1,5 @@
 CRAIGSLIST_CITIES = [
-    "auburn",
-    "bham",
-    "dothan"
+    "gadsden"
 ]
 CRAIGSLIST_BASE_URL = "https://{}.craigslist.org/search/cpg"
 KEYWORDS = [

@@ -435,8 +435,34 @@ function Create() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Reset any existing state from previous scraping jobs
+    if (downloadIntervalRef.current) {
+      clearInterval(downloadIntervalRef.current);
+      downloadIntervalRef.current = null;
+    }
+    if (scrapingTimeoutRef.current) {
+      clearTimeout(scrapingTimeoutRef.current);
+      scrapingTimeoutRef.current = null;
+    }
+    if (timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = null;
+    }
+    setScrapingStatus(null);
+    setCurrentCity(null);
+    
     setIsLoading(true);
     setLoadingMessage('Initializing process...');
+    
+    // Force cleanup before starting a new scraping job to ensure fresh state
+    try {
+      setLoadingMessage('Resetting previous scraping sessions...');
+      await scraperService.resetScraper();
+    } catch (error) {
+      console.warn('Error during pre-scraping reset:', error);
+      // Continue anyway as this is just a precaution
+    }
+    
     // Start the timer
     startScrapingTimer();
     
@@ -789,9 +815,50 @@ function Create() {
     }
   };
 
-  // Cleanup on component unmount
+  // Cleanup on component unmount and reset of state
   useEffect(() => {
+    // Function to reset states when returning to the page
+    const resetStates = async () => {
+      if (downloadIntervalRef.current) {
+        clearInterval(downloadIntervalRef.current);
+        downloadIntervalRef.current = null;
+      }
+      if (scrapingTimeoutRef.current) {
+        clearTimeout(scrapingTimeoutRef.current);
+        scrapingTimeoutRef.current = null;
+      }
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
+      }
+      setIsLoading(false);
+      setLoadingMessage('');
+      setCurrentCity(null);
+      setScrapingStatus(null);
+
+      // Reset the backend scraper to ensure fresh state
+      try {
+        await scraperService.resetScraper();
+      } catch (error) {
+        console.warn('Failed to reset scraper:', error);
+      }
+    };
+
+    // Add event listener for when the page becomes visible again
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        resetStates();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    // Reset when component mounts
+    resetStates();
+
+    // Cleanup on unmount
     return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (downloadIntervalRef.current) {
         clearInterval(downloadIntervalRef.current);
       }
